@@ -15,21 +15,39 @@ function ToDoList(props) {
     console.log(task, ...tasks);
   };
 
+  const updateTask = (id, newValue) => {
+    if (!newValue.text || /^\s*$/.test(newValue.text)) {
+      return;
+    };
+
+    setTask((prev) => prev.map((item) => (item.id === id ? newValue : item)));
+  };
+
+  const removeTask = (id) => {
+    const withoutRemoved = [...tasks].filter((task) => task.id !== id);
+    setTask(withoutRemoved);
+  };
+
   const completeTask = (id) => {
-      let updatedTasks = tasks.map((task) => {
-          if (task.id === id) {
-            task.isComplete = !task.isComplete;
-          }
-          return task;
-      });
-      setTask(updatedTasks);
+    let updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        task.isComplete = !task.isComplete;
+      }
+      return task;
+    });
+    setTask(updatedTasks);
   };
 
   return (
     <div>
       <h1>What's the plan for today?</h1>
       <ToDoForm onSubmit={addTask} />
-      <ToDo tasks={tasks} completeTask={completeTask} />
+      <ToDo
+        tasks={tasks}
+        completeTask={completeTask}
+        removeTask={removeTask}
+        updateTask={updateTask}
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function ToDoForm(props) {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(props.edit ? props.edit.value : "");
 
   const handleChange = (event) => {
     setInput(event.target.value);
@@ -13,19 +13,34 @@ function ToDoForm(props) {
       id: Math.floor(Math.random() * 1000000),
       text: input,
     });
-      
-      setInput('');
+
+    setInput("");
   };
   return (
     <form className="ToDoForm" onSubmit={handleSubmit}>
-      <input
-        className="ToDoInput"
-        type="text"
-        placeholder="Add a todo"
-        value={input}
-        onChange={handleChange}
-      ></input>
-      <button className="ToDoButton">Add</button>
+      {props.edit ? (
+        <>
+          <input
+            className="ToDoInput edit"
+            type="text"
+            placeholder="Update"
+            value={input}
+            onChange={handleChange}
+          />
+          <button className="ToDoButton edit">Update</button>
+        </>
+      ) : (
+        <>
+          <input
+            className="ToDoInput"
+            type="text"
+            placeholder="Add a todo"
+            value={input}
+            onChange={handleChange}
+          />
+          <button className="ToDoButton">Add</button>
+        </>
+      )}
     </form>
   );
 }
